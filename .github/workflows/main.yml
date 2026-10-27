@@ -1,0 +1,44 @@
+
+name: Docker Fullstack
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        if: github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./BeautySalonService-Backend
+          file: ./BeautySalonService-Backend/Dockerfile
+          push: ${{ github.event_name == 'push' }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-backend-2400032017:latest
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./BeautySalonFrontend
+          file: ./BeautySalonFrontend/Dockerfile
+          push: ${{ github.event_name == 'push' }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-frontend-2400032017:latest
