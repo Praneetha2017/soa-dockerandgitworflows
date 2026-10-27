@@ -348,7 +348,7 @@ function App() {
       </main>
 
       <footer className="text-center py-4 text-secondary small">
-        Glow &amp; Grace · Beauty Salon Management System
+        Nayara · Beauty Salon Management System
       </footer>
     </>
   )
