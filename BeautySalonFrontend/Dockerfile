@@ -12,7 +12,7 @@ RUN npm install
 
 # Copy application source code
 COPY . .
-
+RUN chmod +x node_modules/.bin/vite
 # Build Vite application
 RUN npm run build
 
